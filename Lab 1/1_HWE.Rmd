@@ -25,7 +25,9 @@ ____________________________________________________________
 
 **Q2** You venture into the Brazilian rainforest to collect blood samples from harpy eagles. One of them collects some blood from you, but you make it out alive. You genotype the birds at a single locus and observe the following genotypes: 44 AA, 38 Aa, 8 aa.
 **Tip** Writing a function for this might be useful for other exercises. 
+
 Example of a function that would take the genotype counts as arguments and output a dataframe with the frequencies:
+
 >gf(11,22,4)
   genotype frequency
 1       aa 0.1081081
