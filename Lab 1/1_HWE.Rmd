@@ -1,0 +1,88 @@
+---
+title: "Lab1 - Hardy Weinberg Equilibrium"
+output: html_document
+---
+
+# Let's write more useful functions
+
+**Q1** Write a function that takes as its single argument the minor allele frequency, and outputs a data frame with the HWE genotype frequencies.
+
+```{r}
+# CODE YOUR ANSWER HERE
+```
+
+____________________________________________________________
+
+**Q2** You venture into the Brazilian rainforest to collect blood samples from harpy eagles. One of them collects some blood from you, but you make it out alive. You genotype the birds at a single locus and observe the following genotypes: 44 AA, 38 Aa, 8 aa.
+
+> **2a** Calculate the genotype frequencies in the sample
+
+```{r}
+# CODE YOUR ANSWER HERE
+```
+
+> **2b** Calculate the allele frequencies in the sample
+
+```{r}
+# CODE YOUR ANSWER HERE
+```
+
+> **2c** Use the function from Q1 to calculate the expected genotype frequencies under HWE
+
+```{r}
+# CODE YOUR ANSWER HERE
+```
+
+> **2d** Compare the expected and observed genotype frequencies (by eye – we’ll introduce statistical tests later in the course). Does your sample suggest the population is in Hardy-Weinberg equilibrium? Interpret this comparison in 1-2 sentences. 
+
+**A:**
+
+____________________________________________________________
+
+**Q3** Consider a single dominant mutation *A* that leads to black fur in squirrels. 19% of your study population is black. 
+
+> **3a** What percentage of the population is not black?
+
+> **A:**
+
+> **3b** What is the genotype of non-black squirrels?
+
+> **A:**
+
+> **3c** Assuming HWE, calculate the frequency of the *a* and *A* alleles in the population.
+
+> **A: (show your reasoning)**
+
+____________________________________________________________
+
+ **Q4** In a population there are three di-allelic loci with alleles A and a, B and b, and C and c, respectively.  The allele frequencies are fA = 0.2, fB = 0.3, and fC = 0.5.  A crime has been committed, and a hair has been left at the crime scene. Genetic analyses of the hair show that it belongs to an individual with genotype Aa/BB/cc for the three loci.  A person has been arrested because they also have the Aa/BB/cc genotype according to the FBI’s database. Assuming the loci are on different chromosomes (i.e., independent) and in HWE, what is the probability that a random individual has the genotype Aa/BB/cc? 
+
+**A: (show your reasoning)**
+
+____________________________________________________________
+ 
+ 
+**Q5** Write a function that takes in three arguments corresponding to the three genotype frequencies (AA, Aa, aa) and performs the following tasks:
+
+- calculate the allele frequencies
+
+- calculate F
+
+- return F
+
+```{r}
+# CODE YOUR ANSWER HERE
+```
+
+____________________________________________________________
+
+**Q6** You return to the field to sample harpy eagles, this time in Mexico (and with a helmet). You obtain the following genotype frequencies at the same locus as before: 59 AA, 8 Aa, 23 aa.
+
+> **6a** Does the Mexican population appear to be in HWE? Show the work that supports your conclusion. 
+
+> **6b** Use the function from Q5 to calculate F for bothe the Brazilian and Mexican populations
+
+```{r}
+```
+
+> **6c** Interpret the result of Q6b in 2-3 sentences.
