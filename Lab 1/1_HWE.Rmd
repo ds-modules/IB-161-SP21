@@ -88,9 +88,12 @@ ____________________________________________________________
 - return F
 
 Example of a function that takes a dataframe as an argument (it could take a vector or the genotype frequencies as independent arguments) and outputs F:
+
 >example_gf <- data.frame(genotype=c("aa", "Aa", "AA"), freq=c(.58, .07, .35))
+
 > F_func(example_gf)
-[1] 0.8521803
+
+  [1] 0.8521803
 
 ```{r}
 # CODE YOUR ANSWER HERE
