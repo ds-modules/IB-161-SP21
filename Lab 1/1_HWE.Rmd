@@ -1,11 +1,21 @@
 ---
 title: "Lab1 - Hardy Weinberg Equilibrium"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 # Let's write more useful functions
 
 **Q1** Write a function that takes as its single argument the minor allele frequency, and outputs a data frame with the HWE genotype frequencies.
+
+Example of what the function should do:
+
+> hwe(.25)
+  genotype exp_frequency
+1       aa        0.0625
+2       Aa        0.3750
+3       AA        0.5625
 
 ```{r}
 # CODE YOUR ANSWER HERE
@@ -14,6 +24,13 @@ output: html_document
 ____________________________________________________________
 
 **Q2** You venture into the Brazilian rainforest to collect blood samples from harpy eagles. One of them collects some blood from you, but you make it out alive. You genotype the birds at a single locus and observe the following genotypes: 44 AA, 38 Aa, 8 aa.
+**Tip** Writing a function for this might be useful for other exercises. 
+Example of a function that would take the genotype counts as arguments and output a dataframe with the frequencies:
+>gf(11,22,4)
+  genotype frequency
+1       aa 0.1081081
+2       Aa 0.5945946
+3       AA 0.2972973
 
 > **2a** Calculate the genotype frequencies in the sample
 
@@ -66,9 +83,14 @@ ____________________________________________________________
 
 - calculate the allele frequencies
 
-- calculate F
+- calculate the Inbreeding Coefficient (F)
 
 - return F
+
+Example of a function that takes a dataframe as an argument (it could take a vector or the genotype frequencies as independent arguments) and outputs F:
+>example_gf <- data.frame(genotype=c("aa", "Aa", "AA"), freq=c(.58, .07, .35))
+> F_func(example_gf)
+[1] 0.8521803
 
 ```{r}
 # CODE YOUR ANSWER HERE
