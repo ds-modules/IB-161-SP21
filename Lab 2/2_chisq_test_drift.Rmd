@@ -87,7 +87,9 @@ Example:
 calc_chi(c(44,38,8))
 [1] 0.002519526
 
-**Hint** You can write a function that takes a vector with observed genotype counts as an input. Calculate the genotype frequencies. Obtain the allele frequencies. Call the function *hwe_freqs* with the minor allele frequency for calculating the expected frequencies. Calculate the $\chi^2$.
+**Hint** You can write a function that takes a vector with observed genotype counts as an input. Calculate the genotype frequencies. Obtain the allele frequencies. Call the function *hwe_freqs* with the *f_A* allele frequency for calculating the expected frequencies. Calculate the $\chi^2$.
+
+You do not have to follow the instructions of this hint necessarily.
 
 ```{r}
 # CODE YOUR ANSWER HERE
@@ -120,7 +122,7 @@ pchisq(q=3.841, df=1)
 abline(v=3.841, col="red")
 ```
 
-**Q3a** Calculate the p-value for the chi-sqaure statistics 
+**Q3a** Calculate the p-value for the chi-square statistics (use lower.tail=FALSE)
 ```{r}
 # CODE YOUR ANSWER HERE
 
