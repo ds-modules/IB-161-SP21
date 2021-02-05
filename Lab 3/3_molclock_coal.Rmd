@@ -1,0 +1,157 @@
+---
+title: "Lab 3"
+output: pdf_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Molecular clock
+
+If we obtain an estimate of mutation rate, we can use the molecular clock hypothesis to date the divergence of species. 
+
+For example, the function below takes in a given number of sequence differences between two species, and a mutation rate, and returns the estimated divergence time of the two species, based on the molecular clock hypothesis:
+
+```{r}
+# Next 4 lines define the function
+molclock <- function(dif, mu){ 
+  time <- dif/(2*mu)
+  return(time)
+}
+```
+
+Let's test this function with the example from Lecture 
+
+**Q1:** What are the assumptions of the molecular clock hypothesis?
+
+**A:**
+
+Humans and macaques differ 7%, fossil evidence suggests 25 million years of divergece. Using this to calculte the mutation rate we have $\hat{\mu}=\frac{d_{obs}}{2t}$. We can infer the mutation rate to be 1.4*10^-9. 
+Assuming a molecular clock, we use this to estimate human and chimpanzee divergence time, taking into account that they diverge 1.2% in their sequences. 
+```{r}
+molclock(.012, 1.4*10^-9)
+```
+
+
+Recent evidence suggests the Isthmus of Panama closed ~7 million years ago (Bacon et al. 2015. Biological evidence supports an early and complex emergence of the Isthmus of Panama. PNAS.), separating fish populations in the Atlantic and Pacific Oceans. Two fish species separated by this event (Species A and B) differ at 12 nucleotides in a particular gene. 
+
+**Q2a** Use the function below to estimate the mutation rate for this fish gene, and also plot the relationship between time and sequence differences.
+
+```{r}
+# Next 6 lines define the function
+mu_calculator <- function(dif, time){
+  mu <- dif / (2*time)
+  return(mu)
+}
+
+#Let's test this function with the example from above
+mu_calculator(dif=.07, time=25*10^6)
+```
+
+
+ NOW USE THE mu_calculator FUNCTION TO ESTIMATE THE FISH MUTATION RATE
+```{r}
+#YOUR CODE HERE
+```
+
+**Q2b** What is the unit of time and mutation rate?
+
+**A:**
+
+
+**Q2c** Species A and another species (species C) differ at 23 nucleotide differences. Based on this information, and the assumption of a molecular clock with a constant generation time and mutation rate, provide an estimate of the divergence time between species A and C. 
+*TIP:* You can use the mutation rate from Q2a and the *molclock* function for this.
+
+```{r}
+# NOW PROVIDE THE ESTIMATE OF DIVERGENCE TIME BETWEEN SPECIES A AND C IN THE SPACE BELOW
+
+```
+
+# Coalescent simulations
+
+Use the coalesceR package to simulate coalescent trees relating a *sample* of size 10 from a population of size 100 (both *current* and *ancestral* populations sizes are 100 because we are simulating constant population size). 
+
+```{r}
+install.packages("coalesceR", repos="http://R-Forge.R-project.org")
+require(coalesceR)
+
+tree_100_10 <- sim.tree(method = "hudson", sample = 10, current = 100, ancestral = 100, time = 0)
+draw.tree(tree_100_10)
+TMRCA(tree_100_10)
+
+```
+
+Repeat the simulation above 6 times and observe the shape of the trees and their TMRCA.
+
+**Q3a** What TMRCAs did you get in each simulation?
+
+**A**
+Simulation1:
+Simulation2:
+Simulation3:
+Simulation4:
+Simulation5:
+Simulation6:
+
+
+**Q3b** Are the coalescence times near the tips of tree shorter or longer than the coalescence times near the root of the tree? What is more recent?
+
+**A**
+
+## Increasing population size
+
+Use the code below to simulate 6 coalescent trees with sample size of 10 and population size of 1000.
+
+```{r}
+tree_1000_10 <- sim.tree(method = "hudson", sample = 10, current = 1000, ancestral = 1000, time = 0)
+TMRCA(tree_1000_10)
+```
+
+**Q4a** What TMRCAs did you get in each simulation?
+
+**A**
+Simulation1:
+Simulation2:
+Simulation3:
+Simulation4:
+Simulation5:
+Simulation6:
+
+**Q4b** How does the TMRCA change compared to the simulations from Q5a, where population size was 10 times smaller?
+
+**A**
+
+
+## Adding mutation
+
+Now, let's add mutation to coalescent trees. When we do that, mutations are randomly sprinkled on the branches of the tree, at a given rate per time. We will simulate samples of size 4 from populations with 100 individuals, and sprinkle mutations on that tree with a rate of 0.005:
+
+```{r}
+tree_100_4 <- sim.tree(method = "hudson", sample=4, current = 100, ancestral = 100, time = 0)
+tree_100_4_mut <- add.mutations(tree_100_4, mu = 5*10^-3)
+tree_100_4_mut@state
+# mutations on the tree are shown as red dashes, and tips corresponding to different alleles are coded in different colors
+```
+
+**Q5a** Copy and paste below your `tree_1000_4_mut@state` object. (If it is all zeroes, please repeat the simulation and answer this question again.)
+
+**A**
+
+
+**Q5c** How many mutations happened in your tree? Use the code below to compute it.
+```{r}
+max(tree_100_4_mut@state)
+# Please type the answer below
+```
+**A**
+
+
+Now let's simulate a tree with population size 10 times larger, the same sample size and mutation rate, and see how many mutations we get:
+```{r}
+tree_1000_4 <- sim.tree(method = "hudson", sample=4, current = 1000, ancestral = 1000, time = 0)
+tree_1000_4_mut <- add.mutations(tree_1000_4, mu = 5*10^-3)
+max(tree_1000_4_mut@state) # this is the number of mutations
+dev.off()
+```
+**Q6** Looking at that last simulation and your answer from Q6, how does populations size affect TMRCA, number of mutations in a tree and amount of genetic variability in a sample?
+
+
