@@ -1,0 +1,92 @@
+Sample.name	Sex	Population.code	Population.name	Superpopulation.code
+NA19649	male	MXL	Mexican Ancestry	AMR
+NA19651	female	MXL	Mexican Ancestry	AMR
+NA19656	female	MXL	Mexican Ancestry	AMR
+NA19783	male	MXL	Mexican Ancestry	AMR
+NA19788	female	MXL	Mexican Ancestry	AMR
+NA19790	female	MXL	Mexican Ancestry	AMR
+NA19795	male	MXL	Mexican Ancestry	AMR
+NA19719	female	MXL	Mexican Ancestry	AMR
+NA19721	female	MXL	Mexican Ancestry	AMR
+NA19726	male	MXL	Mexican Ancestry	AMR
+NA19733	female	MXL	Mexican Ancestry	AMR
+NA19738	male	MXL	Mexican Ancestry	AMR
+NA19740	female	MXL	Mexican Ancestry	AMR
+NA19752	female	MXL	Mexican Ancestry	AMR
+NA19663	female	MXL	Mexican Ancestry	AMR
+NA19670	male	MXL	Mexican Ancestry	AMR
+NA19675	female	MXL	Mexican Ancestry	AMR
+NA19682	male	MXL	Mexican Ancestry	AMR
+NA19757	male	MXL	Mexican Ancestry	AMR
+NA19764	female	MXL	Mexican Ancestry	AMR
+NA19771	male	MXL	Mexican Ancestry	AMR
+NA19776	female	MXL	Mexican Ancestry	AMR
+HG01503	male	IBS	Iberian,Spanish	EUR
+HG01504	female	IBS	Iberian,Spanish	EUR
+NA20502	female	TSI	Toscani	EUR
+NA20507	female	TSI	Toscani	EUR
+NA20514	female	TSI	Toscani	EUR
+NA20519	male	TSI	Toscani	EUR
+NA20521	male	TSI	Toscani	EUR
+NA20759	male	TSI	Toscani	EUR
+NA20761	female	TSI	Toscani	EUR
+HG00128	female	GBR	British,English	EUR
+HG00126	male	GBR	British,English	EUR
+NA18526	female	CHB	Han Chinese	EAS
+NA18533	female	CHB	Han Chinese	EAS
+NA18538	female	CHB	Han Chinese	EAS
+NA18545	female	CHB	Han Chinese	EAS
+NA18552	female	CHB	Han Chinese	EAS
+NA18557	male	CHB	Han Chinese	EAS
+NA18564	female	CHB	Han Chinese	EAS
+NA18571	female	CHB	Han Chinese	EAS
+NA18576	female	CHB	Han Chinese	EAS
+NA18595	female	CHB	Han Chinese	EAS
+NA18603	male	CHB	Han Chinese	EAS
+NA18608	male	CHB	Han Chinese	EAS
+NA18610	female	CHB	Han Chinese	EAS
+NA18615	female	CHB	Han Chinese	EAS
+NA18622	male	CHB	Han Chinese	EAS
+NA18627	female	CHB	Han Chinese	EAS
+NA18634	female	CHB	Han Chinese	EAS
+NA18639	male	CHB	Han Chinese	EAS
+NA19625	female	ASW	African Ancestry SW	AFR
+NA19834	male	ASW	African Ancestry SW	AFR
+NA19702	male	ASW	African Ancestry SW	AFR
+NA19707	female	ASW	African Ancestry SW	AFR
+NA19714	female	ASW	African Ancestry SW	AFR
+NA20362	male	ASW	African Ancestry SW	AFR
+NA20413	male	ASW	African Ancestry SW	AFR
+NA19904	male	ASW	African Ancestry SW	AFR
+NA19909	female	ASW	African Ancestry SW	AFR
+NA19916	male	ASW	African Ancestry SW	AFR
+NA19923	female	ASW	African Ancestry SW	AFR
+NA19985	female	ASW	African Ancestry SW	AFR
+NA20127	female	ASW	African Ancestry SW	AFR
+NA20300	female	ASW	African Ancestry SW	AFR
+NA20312	female	ASW	African Ancestry SW	AFR
+NA20317	female	ASW	African Ancestry SW	AFR
+NA20336	female	ASW	African Ancestry SW	AFR
+NA20343	male	ASW	African Ancestry SW	AFR
+NA20348	male	ASW	African Ancestry SW	AFR
+NA20350	male	ASW	African Ancestry SW	AFR
+NA20355	female	ASW	African Ancestry SW	AFR
+NA20278	male	ASW	African Ancestry SW	AFR
+NA20285	male	ASW	African Ancestry SW	AFR
+NA20292	female	ASW	African Ancestry SW	AFR
+NA20297	male	ASW	African Ancestry SW	AFR
+NA19701	female	ASW	African Ancestry SW	AFR
+NA19713	female	ASW	African Ancestry SW	AFR
+NA20361	female	ASW	African Ancestry SW	AFR
+NA20412	female	ASW	African Ancestry SW	AFR
+NA20277	female	ASW	African Ancestry SW	AFR
+NA20284	male	ASW	African Ancestry SW	AFR
+NA20289	female	ASW	African Ancestry SW	AFR
+NA20291	male	ASW	African Ancestry SW	AFR
+NA20296	female	ASW	African Ancestry SW	AFR
+NA19908	male	ASW	African Ancestry SW	AFR
+NA19915	male	ASW	African Ancestry SW	AFR
+NA19922	male	ASW	African Ancestry SW	AFR
+NA19984	male	ASW	African Ancestry SW	AFR
+NA20126	male	ASW	African Ancestry SW	AFR
+

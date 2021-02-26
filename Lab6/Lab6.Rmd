@@ -1,0 +1,149 @@
+---
+title: "Lab 6"
+author: "Diana Aguilar Gomez"
+date: "2/25/2021"
+output: pdf_document
+---
+Today we are going to learn how to plot. Specifically I am going to teach you how to plot an SFS and a PCA in R!
+
+## Site Frequency Spectrum
+From Lab 4 you were supposed to plot and SFS from the following data:
+Ancestral:
+G G C C T A T G C C
+Population 3:
+1 2 3 4 5 6 7 8 9 10
+G G C C T A T T C C
+G A C A T A T G C G
+G G C C T A T T C C
+G G C C T A T G C G
+G A C C T A T G C C
+G G C C T A T T C C
+C G C C C A T G C C
+G G G C T A T G C C
+
+1 2 1 1 1 - - 3 - 2
+
+```{r}
+freq <- c(4/7,2/7,1/7)
+barplot(freq,main="Site Frequency Spectrum",
+        xlab="Allele Frequency",
+        ylab = "Proportion",names.arg=c(1:3))
+```
+
+The hist() function is not very intuitive to use in my opinion, and here is how to do it:
+
+```{r}
+afreq <- c(1,1,1,1,2,2,3)
+h <- hist(afreq, breaks = 10, plot=FALSE)
+h$counts=h$counts/sum(h$counts)
+plot(h,main="Site Frequency Spectrum",
+     xlab="Allele Frequency",
+     ylab = "Proportion")
+```
+
+Alternatively you can plot using the count and ggplot2!
+
+```{r}
+library(ggplot2)
+
+afreq <- c(1,1,1,1,2,2,3)
+
+ggplot(data.frame(afreq), aes(x=afreq))+ 
+ geom_histogram(aes(y=..density..),binwidth=1,color="black", fill="blue")+
+  labs(title="SFS",x="Allele frequency", y = "Proportion")
+```
+
+## Principal Component Analysis
+
+Genetic data of 66 individuals was downladed from the 1000 genomes project (https://www.internationalgenome.org/). 
+For these exercise only chromosome 1 was used. The commands used in a Linux server were the following:
+
+```{bash, eval=FALSE}
+#Extract positions
+bcftools view -S samples2extract -o chr1.variouspops.vcf.gz --force-samples -Ov ALL.chr1_GRCh38.genotypes.20170504.vcf.gz
+
+#Convert to plink format
+plink --vcf chr1.variouspops.vcf.gz --make-bed --out manypops --vcf-half-call "m"
+#Calculate covariance matrix and decompose into eigenvalues and eigenvectors
+plink --bfile manypops --pca --out manypops --threads 10
+
+```
+Then the output (eigenvctors and eigenvalues) was downloaded and provided to you. 
+
+```{r}
+#Read data
+eigvectors <- read.table("manypops.eigenvec")
+eigenval <- read.table("manypops.eigenval")
+Metadata <- read.delim("Metadata.txt")
+#Samples present
+samples<-data.frame(Sample.name=eigvectors$V1)
+presentS<-merge(samples,Metadata)
+```
+
+Q1: Which populations are there in the original data and how many individuals do you have of each?
+*A:   *
+
+Q2: Which superpopulations are there in the original data and how many individuals do you have of each ?
+*A:   *
+
+Q3: Which populations are there in the data that we are going to use for the PCA and how many individuals do you have of each?
+*A:   *
+
+Q4: Which superpopulations are there in the data that we are going to use for the PCA and how many individuals do you have of each ?
+*A:   *
+HINT: Use table(dataframe$column of interest)
+```{r}
+##YOUR CODE HERE
+
+```
+
+Now we calculate the percent of variance explained by each of the components
+```{r}
+#Percent of variance explained
+eigvalue <- eigenval$V1/sum(eigenval$V1)
+cat(signif(eigvalue , digits=3)*100,"\n")
+```
+
+Q5: Make a barplot of the variance explained by component versus the component number
+
+```{r}
+#YOUR CODE HERE
+```
+
+
+Q6: How much of the variance is explain by the first 3 components?
+*A:   *
+
+```{r}
+#Prepare all labels
+vecs<-eigvectors[c(3:22)]
+colnames(vecs) <- paste0("PC",c(1:20))
+rownames(vecs)<-eigvectors$V2
+vecs$Population <- presentS$Superpopulation.code
+
+# Plot
+comp<-c(1,2)
+xlabel = paste("PC",comp[1]," (",signif(eigvalue[comp[1]], digits=3)*100,"%)",sep="")
+ylabel = paste("PC",comp[2]," (",signif(eigvalue[comp[2]], digits=3)*100,"%)",sep="")
+x_axis = paste("PC",comp[1],sep="")
+y_axis = paste("PC",comp[2],sep="")
+
+
+cbPalette <- c("#D55E00", "#CC79A7","#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2")
+ggplot() + geom_point(data=vecs, aes_string(x=x_axis, y=y_axis, color="Population",shape="Population"),size=2,alpha = .9)+
+  scale_colour_manual(values=cbPalette)+
+  theme_bw(base_size = 18) +xlab(xlabel)+ylab(ylabel)
+#Save image
+ggsave(filename=paste0("PopulationsbyContinent","PC",comp[1],"PC",comp[2],".png"),width=10,height=6)
+
+
+```
+
+
+Q7: What can you observe of this plot? For example: What is the PC1 separating? Why do you think the population with African ancestry looks like that? Why do you think the population with Mexican ancestry looks like that? You do not have to answer all the questions. Just try to describe what you observe. 
+*A:   *
+
+
+If you have extra time you can try to go back and plot different components.
+
+
