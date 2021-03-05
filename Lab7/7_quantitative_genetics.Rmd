@@ -1,0 +1,206 @@
+---
+title: "Lab 7"
+output: pdf_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Quantitative genetics 
+
+## R stats functions for quantitative genetics
+
+R has very handy built-in functions for statistics. Let's see how you can use some of them, which will be useful in the study of quantitative genetics.
+
+**Univariate statistics**
+
+```{r}
+# Take any vector with numbers
+vec_x <- sample(1:10, 20, replace = T) 
+# in this example I'm randomly sampling 20 numbers from the vector of numbers 1-10, with replacement. 
+vec_x
+
+# to compute the MEAN:
+mean(vec_x)
+
+# to compute the VARIANCE:
+var(vec_x)
+
+# to plot a HISTOGRAM of the values:
+hist(vec_x)
+```
+
+**Bivariate statistics**
+
+```{r}
+# Take another vector
+vec_y <- rnorm(20, mean=5.5, sd = 1)
+# in this second example, I'm randomly sampling 20 number from a normal distribution with mean 5.5 and standard deviation 1
+vec_y
+
+mean(vec_y)
+var(vec_y)
+hist(vec_y)
+
+# SCATTER PLOT of 2 variables
+plot(vec_x, vec_y)
+# per convention, we usually put the predictor/independent variable on the X axis, and the response/dependent variable on the Y axis
+# does it look like x and y are linearly related?
+
+# COVARIANCE between 2 variables
+cov(vec_x, vec_y)
+
+# LINEAR REGRESSION of y as a function of x
+model <- lm(vec_y ~ vec_x)
+model
+# extract the coefficients from the linear model
+model$coefficients
+# plot the line for this linear model on our scatter plot
+abline(model)
+```
+
+Remember: you can always use the question mark to look at the help page for those functions:
+```{r}
+?mean
+```
+
+**Other tricks that may be useful to you today or not**
+
+You can sort the values in a vector in increasing order:
+```{r}
+sort(vec_x)
+```
+
+You can select values larger than a certain threshold with:
+```{r}
+vec_x [ vec_x > 5 ]
+```
+
+
+## Narrow-sense heritability and genetic variance of a trait
+
+[Problem modified from Hartl and Clark - Principles of population genetics, 4th ed.]
+
+You are going to study the fascinating Drosophila melanogaster abdominal bristles.
+If you are curious to know what those bristles are, you can see some here (abdominal bristles are not showing much, though): https://en.wikipedia.org/wiki/Drosophila_melanogaster#/media/File:Drosophila_melanogaster_Proboscis.jpg 
+
+You counted bristle number in a set of parents and in four of their offspring. 
+In the vectors below, *parents* is the midparent value of bristle number, and *offspring* is the average bristle number among four of their offspring.
+
+```{r}
+parents   <- c(18.5,  18,    23,    20,    21,    19.5,  23,    18.5,  19,    21,    23.5,  17)
+offspring <- c(20.19, 19.45, 20.87, 20.71, 20.84, 18.14, 20.84, 17.92, 18.73, 18.52, 22.69, 19.05)
+```
+
+**Q1** What does midparent value mean?
+
+**A:**
+
+**Q2** Calculate the mean and variance of number of bristles in the parents.
+
+```{r}
+
+
+```
+
+**Q3** Do a scatter plot of parents and offspring. Think about which one to put in each axis carefully.
+
+```{r}
+
+
+```
+
+**Q4** Do a linear regression of offspring on midparent number of bristles, and add the regression line to the plot from Q3.
+
+```{r}
+
+
+```
+
+**Q5a** Estimate narrow sense heritability of bristle number in this population of Drosophilas.
+
+```{r}
+
+
+```
+
+**Q5b** Would you say the narrow sense heritability from part **5a** is high? Why?
+
+**A**
+
+
+**Q5c** Is bristle number genetically determined to any degree? Why?
+
+**A**
+
+
+**Q6** Estimate additive genetic variance for bristle number in this Drosophila population.
+
+```{r}
+
+
+```
+
+## Selection on quantitative traits
+
+You are so excited about Drosophila bristles that now you want to use artificial selection to try to increase the number of abdominal bristles. You are starting your selection experiment with the *offspring* from the previous part.
+
+**Q7** Explain why your answer to part **5c** is relevant to determine the success of this experiment.
+
+**A**
+
+**Q8** What is the mean number of bristles in the offspring, before you apply artificial selection?
+
+```{r}
+
+
+```
+
+**Q9** You apply truncation selection, only allowing Drosophilas with more than 20 bristles to reproduce. What is the selection differential?
+
+```{r}
+
+
+```
+
+**Q10** What would the mean in the next generation be, if narrow sense heritability for that trait was 1?
+
+```{r}
+
+```
+
+**Q11** Next generation, you count the number of bristles in the baby flies and observe the number of bristles shown in the vector *gen1*. What was the response to selection?
+
+```{r}
+gen1 <- c(19, 20, 22, 20, 21, 18, 20, 23, 21, 20, 20)
+
+```
+
+## Optional questions (extra point if you answer them correclty, no penalization if you do not answer correctly or leave blank)
+
+**Q12** You apply the same selection differential to generation 1 flies, and breed the selected flies to form generation 2. What is the mean number of bristles you *expect* to see in generation 2 after selection, assuming narrow sense heritability remains constant (use the value that you estimated in 5a for h2)?
+
+```{r}
+
+
+```
+
+
+**Q13** You count the number of bristles in the generation 2 after selection (now hoping they didn't gain that many bristles, because you are getting tired of this). You observe the number of bristles in vector *gen2* below. Calculate the new response to selection
+
+```{r}
+gen2 <- c(22, 20, 19, 21, 20, 19, 20, 23, 21, 20, 20)
+
+
+```
+
+**Q14** Was the mean after selection larger or smaller than what you expected (Question 12)? Give one biological explanation to why that could have happened.
+
+```{r}
+
+
+```
+
+**A** 
+
+
+
