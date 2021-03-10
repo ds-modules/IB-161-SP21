@@ -1,0 +1,258 @@
+---
+title: "Lab 8"
+output: pdf_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Linkage Disequilibrium
+
+## Computing LD from real data
+
+### Variant call format files
+
+We are going to start using data from the [1000 Genomes Project](http://www.internationalgenome.org/), which sequenced whole genomes from human populations around the globe. 
+
+The released data is in VCF format, which looks like this:
+
+```
+#CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  NA18486 NA18488 NA18489 NA18498 
+15      20000075        rs565090028     C       T       100     PASS    .       GT      0|0     0|0     0|0     0|0 
+15      20000123        rs373298708     T       C       100     PASS    .       GT      0|0     0|0     0|0     0|0 
+15      20000127        rs560310552     A       T       100     PASS    .       GT      0|0     0|0     0|0     0|0 
+15      20000247        rs531597354     C       T       100     PASS    .       GT      0|0     0|0     0|0     0|0 
+15      20000406        rs60733375      T       C       100     PASS    .       GT      0|0     1|0     0|0     0|0 
+15      20000477        rs561020145     G       A       100     PASS    .       GT      0|0     0|0     0|0     0|0 
+15      20000494        rs60723211      T       G       100     PASS    .       GT      0|0     0|0     0|0     0|1 
+15      20000538        rs113772187     C       T       100     PASS    .       GT      0|0     1|1     1|1     0|0 
+15      20000638        rs28859984      T       C       100     PASS    .       GT      1|1     1|1     1|1     1|1 
+```
+
+Each row is a SNP. The first 9 columns have information about the SNPs and from columns 10 until the last one, we have genotypes of individuals. 
+Zeroes represent the reference allele, and ones represent the alternative allele. The vertical bars (|) separating alleles tell you that those genotypes are phased (otherwise, alleles would be separated by "/"). VCF format is pretty standard, and R has special functions to read in this type of data. We are going to use functions from the *pegas* package to read in genetic data, and analyse it.
+
+A package is simply a set of functions that usually perform related tasks, and thus come in a single *package*. *pegas* stands for "Population and Evolutionary Genetics Analysis System". We are going to use this and other packages for genetics analyses in the next labs. This package is pre-installed in these computers. If you wan to use it in your own computer, you can install it with the following command:
+
+```{r}
+#install.packages("pegas")
+```
+
+I selected part of a VCF with SNPs from a small region of chromosome 15, and only individuals from the Yoruba population, from West Africa. Let's read this VCF into R:
+
+```{r}
+library(pegas)
+
+# read.vcf nicely reads in data in vcf format and generates an object of class "loci"
+chr15 <- read.vcf("chr15_YRI_SNPs_part.recode.vcf")
+
+# VCFloci extracts the information contained in the first 9 columns of the VCF and generates a data frame
+chr15_info<- VCFloci("chr15_YRI_SNPs_part.recode.vcf")
+```
+
+
+### Calculating and plotting LD
+
+The *LDscan* function from *pegas* takes in a "loci" type of object, and computes pairwise r-squared between all pairs of loci. The output is a distance matrix, with the SNPs in rows and columns, and the lower diagonal filled in with r-squared values between each pair of SNPs. It is a object of class "dist".
+
+The function *LDmap* takes in the "dist" object output by *LDscan*, and plots it:
+
+```{r}
+#compute LD between all pairs of SNPs
+pwLD <- LDscan(chr15)
+
+# plot pairwise LD as a heatmap
+LDmap(pwLD,
+      breaks = seq(0,1,0.1),
+      scale.legend = 4,
+      cex.axis=0.3)
+```
+
+**Q1:** What molecular process is most likely to generate the haplotype blocks we often observe in this type of plot? Explain in one or two sentences what this process consists of.
+
+**A:**
+
+
+**Q2:** This data comes from Yoruba individuals. Would you expect to see more or less LD in a Native American population? Why?
+
+**A:**
+
+
+Now, we can plot the values of LD between each pair of SNPs (calculated above), as a function of distance between the SNPs. To calculate the distance between SNPs, we will use the *dist* function. Here's an example of how it works:
+
+```{r}
+positions <- c(1,2,6,10,100)
+dist(positions)
+```
+
+**Q3** Use the dist function to calculate the distance between all pairs of SNPs, then make a plot with distance in the x axis, and LD in the y axis.
+
+```{r}
+
+```
+
+The pattern is not super clear because this is a small part of the chromosome. I have generated a plot computing LD between the first SNP in chromosome 15 and the next 9999 SNPs (*chr15_pwLD_10kloci.png*). Please open it and use it to answer Q4 a-c below. The code I used to generate that figure is below, just for your reference:
+
+```{r}
+# 1. read in data
+chr15 <- read.vcf("chr15_YRI_SNPs.recode.vcf",from=1,to=10000)
+chr15_info<- VCFloci("chr15_YRI_SNPs.recode.vcf")[1:10000,]
+
+# 2. compute LD with the "LD" function from pegas
+
+# start an empty vector 'r' with length 10000
+r <- numeric(10000)
+# loop from numbers 1 to 10000
+r[1] <- 1
+for(i in 2:10000){
+  # compute LD between locus 1 and locus i (i going from 1 to 10000)
+  x <- LD(chr15, locus = c(1,i))
+  # extract the correlation (r2) from the output from the LD function, and store it in the vector r
+  r[i] <- abs(x$`Correlations among alleles`)[1]
+}
+
+# 3. Plot r-squared as a function of distance from locus 1.
+png("chr15_pwLD_10kloci.png")
+plot(dist(chr15_info$POS)[1:10000], r,
+     xlab="Distance from locus 1",
+     ylab="Linkage disequilibrium (r^2)")
+dev.off()
+```
+
+**Q4a:** What is the relationship between LD and physical distance between SNPs in a chromosome?
+
+**A:**
+
+
+**Q4b:** What molecular process causes the pattern you described in Q4a? Explain how it causes the pattern.
+
+**A:** 
+
+
+**Q4c:** Why is the plot so noisy, even with 10000 loci?
+
+**A:**
+
+
+**Q5:** In lecture, we discussed why LD is stronger around centromeres. Go back to that slide and note that the X chromosome also has higher LD than other chromosomes. Explain this pattern.
+
+**A:** 
+
+# Association mapping
+
+## One locus case-control association study - Example
+
+In case-control association studies, you are interested in testing if certain alleles are associated to a disease or some other discrete phenotype. Here is the data from an Alzheimer association mapping study you saw in lecture:
+
+```{r}
+# observed table
+observed <- matrix(c(24,86,278,296), 
+                   ncol=2,
+                   dimnames = list(c("Affected", "Unaffected"), c("A","a")))
+observed
+```
+
+From this 2x2 contingency table, you can calculate what are the expected number of alleles in affected and unaffected individuals, *if that locus is not associated to the disease* (this is the null hypothesis):
+
+```{r}
+# calculate the expected table from the observed marginals
+R <- rowSums(observed) # row marginal values
+C <- colSums(observed) # column marginal values
+tot <- sum(observed) # total number of observations
+
+expected <- matrix(c(R[1]*C[1], R[2]*C[1], R[1]*C[2], R[2]*C[2]) / tot,
+                   ncol=2, 
+                   dimnames = list(c("Affected", "Unaffected"), c("A","a")))
+expected
+round(expected) #the example in lecture was rounded up to units
+```
+
+With the *observed* data, and the *expected* values under the null hypothesis, you can apply a chi-square test of the null hypothesis (no association between locus and disease). The function *calculate_chisq* you created in Lab 2 can be used here:
+
+```{r}
+# create the chi-square calculator function
+calculate_chisq <- function(observed, expected){
+  chisq <- sum( ( (observed-expected)^2 ) / expected )
+  return(chisq)
+}
+
+# use the function defined above to calculate chi-squared
+calculate_chisq(observed, expected)
+```
+
+This should give you the same result as using the R built-in *chisq* function, if you turn off a statistical correction that this function applies by default in 2x2 contingency tables:
+
+```{r}
+chi2result <- chisq.test(observed, correct = F)
+chi2result
+str(chi2result) #check the structure of that object
+chi2result$p.value # extract the p-value for that test
+```
+
+**Q6** Given the chi-square value you calculated above, would you say there is an association between the locus and the disease? Justify your answer mentioning at least 3 of the words: *chi-square*, *critical value*, *null hypothesis* and *p-value*.
+
+**A:**
+
+
+## Real world GWAS issues
+
+We will work with a dataset on oat yield. Yield is classified as low (0) or high (1). We have yield data for 328 varieties of oat, which were genotyped at 2573 loci.
+
+Read in the genotype and phenotype data below:
+
+```{r}
+# read into R the phenotypes table
+phenos <- read.csv("phenotypes.csv")
+class(phenos) # phenos is a dataframe
+dim(phenos) # it has 328 rows (samples) and 2 columns (sample ID and Yield)
+phenos[1:10,] # View first 10 lines of phenotypic data.
+
+# read into R the genotypes table
+genos <- read.csv("genotypes.csv")
+class(genos)
+dim(genos) # 2573 markers and 328 samples + 3 columns of marker info
+genos[1:10,1:10] 
+# missing data is encoded as NA
+# genotypes are coded as -1,0,1 for aa,Aa,AA, respectively
+# all samples are homozygous (aa or AA), because those are inbred lines
+```
+
+If you were planning to publish your GWAS findings, you would most likely use more advanced methods, that allow you to control for factors that could confound your results, such as population structure and environmental effects. The *GWAS* function from the *rrBLUP* package is a good option, and it takes genotype and phenotype data in the same format we have been using, except it can also take continuous phenotypes too (which makes more sense in the case of oat yield):
+
+```{r message=FALSE, warning=FALSE,r, results='hide'}
+# install in your computer an R package that performs GWAS
+#install.packages("rrBLUP")
+# load into this R section all functions from that package
+library(rrBLUP)
+
+phenos.cont <- read.csv("phenotypes_continuous.csv")
+GWAS(phenos.cont,genos,plot = T)
+```
+
+**Q7**: In which chromosomes do you have markers with significant associations above the threshold of -log(p)=5 ?
+
+**A**
+
+
+
+**Q8** When we go from testing association in a single marker to the genome wide tests with thousands of markers, we face the issue of multiple testing.
+
+"For example, if we were to test 500,000 SNPs and say that there is a significant association between a SNP and the disease if the P value from a chi-squared test is less than 0.001, we would expect to see 500 SNPs significantly associated even if there were no genetic effect at all on the disease. The solution is relatively simple: a much lower P value is used" (Nielsen and Slatkin, 2013. An introduction to population genetics: theory and applications). 
+
+One commonly used correction for multiple testing is called Bonferroni correction.
+From the Wikipedia (https://en.wikipedia.org/wiki/Bonferroni_correction):
+The Bonferroni correction compensates for that increase by testing each individual hypothesis at a significance level of $\alpha /m$, where $\alpha$ is the desired overall alpha level and $m$ is the number of hypotheses. For example, if a trial is testing $ m=20$ hypotheses with a desired $\alpha = 0.05$, then the Bonferroni correction would test each individual hypothesis at $\alpha =0.05/20=0.0025$ }.
+
+What P value would you use for the oat yield GWAS if you were applying a simple Bonferroni correction on the P value of 0.05?
+
+```{r}
+
+
+```
+
+**Q9** Explain why linkage disequilibrium is important for association mapping, and why, on the other hand, it can make it difficult to pinpoint the loci that actually cause the phenotype.
+
+**A**
+
+
+
+ 
