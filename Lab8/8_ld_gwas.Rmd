@@ -242,7 +242,7 @@ One commonly used correction for multiple testing is called Bonferroni correctio
 
 From the Wikipedia (https://en.wikipedia.org/wiki/Bonferroni_correction):
 
-The Bonferroni correction compensates for that increase by testing each individual hypothesis at a significance level of $\alpha /m$, where $\alpha$ is the desired overall alpha level and $m$ is the number of hypotheses. For example, if a trial is testing $m=20$ hypotheses with a desired $\alpha = 0.05$, then the Bonferroni correction would test each individual hypothesis at $\alpha =0.05/20=0.0025$ }.
+The Bonferroni correction compensates for that increase by testing each individual hypothesis at a significance level of $\alpha /m$, where $\alpha$ is the desired overall alpha level and $m$ is the number of hypotheses. For example, if a trial is testing $m=20$ hypotheses with a desired $\alpha = 0.05$, then the Bonferroni correction would test each individual hypothesis at $\alpha =0.05/20=0.0025$ .
 
 What P value would you use for the oat yield GWAS if you were applying a simple Bonferroni correction on the P value of 0.05?
 
