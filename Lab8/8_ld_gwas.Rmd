@@ -90,9 +90,9 @@ dist(positions)
 
 ```
 
-The pattern is not super clear because this is a small part of the chromosome. I have generated a plot computing LD between the first SNP in chromosome 15 and the next 9999 SNPs (*chr15_pwLD_10kloci.png*). Please open it and use it to answer Q4 a-c below. The code I used to generate that figure is below, just for your reference:
+The pattern is not super clear because this is a small part of the chromosome. I have generated a plot computing LD between the first SNP in chromosome 15 and the next 9999 SNPs (*chr15_pwLD_10kloci.png*). Please open it and use it to answer Q4 a-c below. The vcf to generate this plot was not provided to you because it is too heavy. The code used to generate that figure is below, just for your reference:
 
-```{r}
+```
 # 1. read in data
 chr15 <- read.vcf("chr15_YRI_SNPs.recode.vcf",from=1,to=10000)
 chr15_info<- VCFloci("chr15_YRI_SNPs.recode.vcf")[1:10000,]
