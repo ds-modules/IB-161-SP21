@@ -1,0 +1,351 @@
+---
+title: "Lab 9"
+output: pdf_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+# Natural Selection I
+
+## Selection in infinite, haploid populations (p.130-132)
+
+Assuming a haploid population, we can predict allele frequencies in a biallelic locus as a function of time, given the relative fitness of individuals with alleles *A* and *a*.
+
+**Q1** Assume a single biallelic locus in a haploid population, with allele frequencies 0.01 for *A* and 0.99 for *a*, and relative fitness of 1 for *A* and 0.99 for *a*, as specified below. Calculate the expected frequency of allele *A* at the 100th generation after selection starts acting. What is the expected frequency of *A*?
+
+**A: **
+
+```{r}
+# allele frequencies
+fA <- 0.01
+fa <- 1-fA
+# relative fitness of alleles
+wA <- 1
+wa <- 0.99
+# selection coefficient
+s <- wA-wa
+
+### Code your answer here
+```
+
+**Q2** Look at the *for* loop below and understand how it works to calculate the frequency of the *A* allele in generations 1 to 1000, given the same fitness and starting allele frequencies as in the previous exercise (given below). Check that you get approximately the same frequency of *A* at the 100th generation as you calculated above. What frequency did you get at the 100th generation?
+We saw these equations for fA' you saw in lecture. See also page 131 of the book.
+
+**A: **
+
+```{r}
+# allele frequencies
+fA <- 0.01
+fa <- 1-fA
+# relative fitness of alleles
+wA <- 1
+wa <- 0.99
+# selection coefficient
+s <- 1-0.99
+
+# Create a vector to store the allele frequencies in 1000 generations
+ngen <- 1000
+fA <- numeric(ngen)
+fA[1] <- 0.01
+
+for (gen in 2:ngen){
+  fA[gen] <- ( wA * fA[gen-1] ) / (wA * fA[gen-1] + wa * (1-fA[gen-1]) )
+}
+
+# Look at position 100 in vector of allele frequencies fA to answer the question             
+
+```
+
+
+The code below should reproduce Figure 7.2 from the book
+```{r}
+# Reproducing Fig. 7.2 from the book:
+plot(fA, 
+     type = "l", # make this a line plot
+     ylab = "fA(t)",
+     xlab = "t (in generations)")
+```
+
+**Q3** Is the *A* allele deleterious or beneficial?
+
+**A:** 
+
+
+**Q4** What frequency does the *A* allele approach over time?
+
+**A:** 
+
+**Q5** Does the frequency of *A* change faster when *A* is at low (~0.01), intermediate (~0.5) or high (~0.99) frequency? Tip: Use the plot to answer this question.
+
+**A:** 
+
+
+## Selection in infinite, diploid populations (p.133-144)
+
+In diploid organisms, each of the three possible genotypes in a biallelic locus can have different probabilities of survival into adulthood (i.e. viability), which translate into a different fitness for each genotype.
+
+**Q6** Complete the for loop below to compute the frequency of allele *A* in the next 50 generations. Assuming the genotype fitness below and starting frequency of *A* of 0.01.
+*Tip:* You will need to use one of the equations for fA' you saw in lecture. See also page 136 of the book.
+```{r}
+# fitness of each genotype
+waa <- 0.6
+wAa <- 0.8
+wAA <- 1
+
+ngen <- 50
+fA <- numeric(ngen)
+fA[1] <- 0.01
+
+for (gen in 2:ngen){
+# UNCOMMENT THE FOLLOWING LINE AND COMPLETE IT (add as many lines of code and intermediate variables as you see need for):
+ # fA[gen] <-
+}
+```
+
+
+If you calculated the frequencies correctly in the previous question, the code below should reproduce Figure 7.4 from the book.
+
+```{r}
+# Reproducing Fig. 7.2 from the book:
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)", 
+     xlab = "t (in generations)")
+```
+
+
+**Q7** What type of selection is this? (Directional, overdominance or underdominance?) How is it generally defined in terms of the fitness of genotypes?
+
+**A: ** 
+
+
+**Q8** Which allele is advantageous? What frequency does this allele approach over time?
+
+**A: **
+
+
+### Selection on dominant vs. recessive alleles
+
+**Q9** Use your for loop from **Q6** again to compute the frequency of *A* in the next 300 generations, in a scenario where *a is dominant* and *A* is recessive. Fitness of AA is 1 and fitness of aa is 0.9. Use initial frequency of *A* of 0.05. Plot the result.
+
+```{r, eval=F}
+# genotypic fitness
+wAA <- 1
+wAa <- # what is this if a is the dominant allele?
+waa <- 0.9
+
+# vector to store frequency of A in 300 generations
+ngen <- 300
+fA <- numeric(ngen)
+# starting frequency of A in generation 1
+fA[1] <- 0.05
+
+# write your for loop below to compute fA in the next 299 generations
+
+###########
+# Plotting tricks used below:
+# If you add `par(new=T)` before you plot fA, the lines are overlayed in the same plot. 
+# If you add `par(mfrow=c(3,1))` it plots 3 plots in the same figure. 
+# To specify colors to your line plot you can use `col='red'` as one of the plot arguments. 
+# To add a legend, check up the help for the legend function: `?legend`
+
+# plot your result
+plot(fA, 
+     type = "l",
+     ylim = c(0,1),
+     ylab = "fA(t)",
+     xlab = "t (in generations)",
+     col = "red")
+legend(250,0.3,"A recessive",col="red",lty = 1)
+```
+
+
+**Q10** At around how many generations did *A* reach a frequency of 0.2 in the previous simulation? (You can estimate it from the plot, by eye.)
+
+**A:** 
+
+
+**Q11** Use your for loop from **Q6** again to compute the frequency of *A* through 300 generations, in a scenario where *A is dominant* and *a* is recessive. wAA is 1 and waa is 0.9. Use initial frequency of *A* of 0.05. Plot the result. 
+
+```{r,eval=F}
+wAA <- 1
+wAa <-  # what is this if A is the dominant allele?
+waa <- 0.9
+
+# vector to store frequency of A in 300 generations
+ngen <- 300
+fA <- numeric(ngen)
+# starting frequency of A in generation 1
+fA[1] <- 0.05
+
+# write your for loop below to compute fA in the next 299 generations
+
+###########
+# Plotting tricks used below:
+# If you add `par(new=T)` before you plot fA, the lines are overlayed in the same plot. 
+# If you add `par(mfrow=c(3,1))` it plots 3 plots in the same figure. 
+# To specify colors to your line plot you can use `col='red'` as one of the plot arguments. 
+# To add a legend, check up the help for the legend function: `?legend`
+
+# plot your result
+par(new=T)
+plot(fA, 
+     type = "l",
+     ylim = c(0,1),
+     ylab = "fA(t)",
+     xlab = "t (in generations)",
+     col = "blue")
+legend(250,0.2,"A dominant",col="blue",lty = 1)
+```
+
+**Q12** At around how many generations did *A* reach a frequency of 0.2 in the previous simulation? (You can estimate it from the plot, by eye.)
+
+**A:** 
+
+**Q13** Comparing directional selection on recessive alleles to directional selection on dominant alleles, answer:
+
+**Q13a** When an allele is at low frequency (0-0.2), is selection more efficient if the allele is dominant or recessive? In other words, in which scenario does selection change fA from 0.05 to 0.2 faster? Why?
+
+**A:** 
+
+
+**Q13b** When an allele is at high frequency (0.8-1), why does it take so long for selection to increase the frequency of a beneficial allele if it is dominant?
+
+**A:** 
+
+
+**Q14** Run the following code to simulate a population starting with frequency of *A* of 0.1 and keeping wAA=wAa=1. Then, vary waa from 0.1 to 0.5 to 0.8 and answer: How do different values of fitness of the disadvantageous genotype (aa, in this case) affect the rate of change of allele frequencies over time?
+
+**A:** 
+
+```{r}
+wAA <- 1
+wAa <- 1
+waa <- 0.1
+ngen <- 100
+fA <- numeric(ngen)
+fA[1] <- 0.1
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)",
+     ylim=c(0,1),
+     col="red")
+
+
+waa <- 0.5
+fA <- numeric(ngen)
+fA[1] <- 0.1
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+par(new=T)
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)",
+     ylim=c(0,1),
+     col="blue")
+
+
+waa <- 0.8
+fA <- numeric(ngen)
+fA[1] <- 0.1
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+par(new=T)
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)",
+     ylim=c(0,1),
+     col="green")
+
+```
+
+
+Run the following code to compute the frequency of *A* through 300 generations, with the following starting conditions and initial frequency of *A* of 0.01. Plot the result.
+
+```{r}
+wAA <- 0.8
+wAa <- 1
+waa <- 0.7
+
+ngen <- 300
+fA <- numeric(ngen)
+fA[1] <- 0.01
+
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)")
+```
+
+**Q15** What frequency does allele *A* approach over time in this scenario? What about allele *a*?
+
+**A:** 
+
+
+**Q16** What type of selection is this? (Directional, overdominance or underdominance?) How is it generally defined in terms of the fitness of genotypes?
+
+**A:** 
+
+Run the following code to compute the frequency of *A* through 100 generations, with the following starting conditions and initial frequencies of *A* of 0.6 and 0.7. Plot the result.
+
+
+```{r}
+wAA <- 0.9
+wAa <- 0.8
+waa <- 1
+
+ngen <- 100
+fA <- numeric(ngen)
+
+
+fA[1] <- 0.6
+
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)",ylim=c(0,1))
+
+fA[1] <- 0.7
+
+for (gen in 2:ngen){
+  v_bar <-  wAA*fA[gen-1]^2 + 2 * wAa * fA[gen-1] *(1-fA[gen-1]) + waa * (1-fA[gen-1])^2
+  fA[gen] <- ( wAA * fA[gen-1]^2 + wAa * fA[gen-1]*(1-fA[gen-1]) ) / v_bar
+}
+
+par(new=T)
+plot(fA, 
+     type = "l",
+     ylab = "fA(t)",
+     xlab = "t (in generations)",ylim=c(0,1))
+par(new=F)
+```
+
+**Q17** Does the *A* allele get fixed or lost over time when initial allele frequency is 0.6? What if initial frequency of *A* is 0.7?
+
+**A:** 
+
+**Q18** What type of selection is this? (Directional, overdominance or underdominance?) How is it generally defined in terms of the fitness of genotypes?
+
+**A:** 
+
