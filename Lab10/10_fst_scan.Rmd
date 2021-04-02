@@ -1,0 +1,146 @@
+---
+title: "Lab 10"
+output:
+  pdf_document:
+    toc: yes
+editor_options:
+  chunk_output_type: inline
+---
+## Demonstration: 1000 Genomes Selection Browser
+
+The 1000 Genomes Selection Browser is a set of tracks on UCSC genome browser that show statistics of neutrality tests along the human genome for 3 populations: Yoruba in Ibadan, Nigeria	(YRI), Utah Residents (CEPH) with Northern and Western European Ancestry (CEU), Han Chinese in Beijing, China (CHB).
+
+1. Access the 1000 Genomes selection browser here: http://pgb.ibe.upf.edu/cgi-bin/hgTracks
+
+2. Click "Hide all" to hide all tracks
+
+3. Select the following tracts:
+
+- Mapping and Sequencing Tracks: Base Position (dense)
+
+- Genes and Gene Prediction Tracks: RefSeq Genes (pack)
+
+- Selection Statistics based on Population Differentiation: Fst_score (full) *not rank_score*
+
+- Zoom into MC1R as example
+
+## Fst outlier test
+
+A statistic that can be used to look for candidates of natural selection is Fst. High Fst indicates highly differentiated allele frequencies between populations. If you calculate Fst between populations for many SNPs in a region, SNPs with excessively high Fst (relative to other SNPs genomewide) are good candidates for being under different selective pressures in each population.
+
+We will calculate Fst for each SNP in a region of chromosome 15. This dataset is stored in a VCF file. We saw the general structure of a VCF file in Lab 6:
+```
+#CHROM  POS             ID              REF     ALT     QUAL    FILTER  INFO    FORMAT  indiv1 indiv2
+15      20000075        rs565090028     C       T       100     PASS    .       GT      0|0     0|0
+15      20000123        rs373298708     T       C       100     PASS    .       GT      0|0     0|0
+15      20000127        rs560310552     A       T       100     PASS    .       GT      0|0     0|0
+15      20000247        rs531597354     C       T       100     PASS    .       GT      0|0     0|0
+15      20000406        rs60733375      T       C       100     PASS    .       GT      0|0     1|0
+15      20000477        rs561020145     G       A       100     PASS    .       GT      0|0     0|0
+15      20000494        rs60723211      T       G       100     PASS    .       GT      0|0     0|0
+15      20000538        rs113772187     C       T       100     PASS    .       GT      0|0     1|1
+15      20000638        rs28859984      T       C       100     PASS    .       GT      1|1     1|1
+```
+
+Each row is a SNP. The first 9 columns have information about the SNPs and from columns 10 until the last one, we have genotypes of individuals. Zeroes represent the reference allele, and ones represent the alternative allele. 
+
+We will use the same functions to read in vcf files we used in Lab 6:
+
+```{r}
+library(pegas)
+
+# *read.vcf* reads in the genotypes from the vcf file
+chr15_loci <- read.vcf("chr15.vcf", to = 50000)
+
+# *VCFloci* reads in the first 9 columns that contain information about each SNP
+chr15_info <- VCFloci("chr15.vcf")
+```
+
+**Q1** How many SNPs are there in this dataset? 
+*Tip:* you can use function *str* to look at the structure of an object or *dim* to look at the dimensions of an object.
+
+**A**
+
+
+**Q2** How many individuals are there in this dataset?
+
+**A**
+
+
+**Q3** What type of object is chr15_loci? 
+*Tip:* you can use the *class* function for that.
+
+**A**
+
+
+In another file, we have information about which population each individual belongs to:
+```{r}
+chr15_pops <- read.table("1000g.pops", col.names=c("individual", "population"))
+head(chr15_pops)
+unique(chr15_pops$population)
+# we have individuals from CEU, YRI and JPT (Japanese) populations.
+```
+
+The *Fst* function from the *pegas* package calculates Fst for each SNP in a *loci* object created by read.vcf. This will take a while (~10min). It's a lot of SNPs! Meanwhile, discuss about the inheritance of IQ (this was the question with the most mistakes in Midterm2). 
+
+```{r}
+chr15_diff <- Fst(chr15_loci, pop = chr15_pops$population)
+# if the line above is taking too long, skip it and uncomment and run the line below to load the pre-calculated F-statistics:
+# Column 2 of the chr15_diff object contains Fst values. Save it to new object:
+chr15_fst <- chr15_diff[,2]
+
+# Fst distribution 
+hist(chr15_fst, xlab = "Fst")
+
+# Plot Fst values along the positions in chromosome 15
+plot(chr15_info$POS, chr15_fst)
+
+# max gives you the maximum 
+max(chr15_fst, na.rm=T)
+
+# which.max determines the location of that maximum value
+(max_index <- which.max(chr15_fst))
+
+# extract the information of the SNP with the maximum Fst value:
+chr15_info[max_index,]
+```
+
+Check out this SNP's allele frequency in human populations around the globe at https://popgen.uchicago.edu/ggv/
+
+**Q4** What is are the alleles at that locus?
+
+**A** Reference allele is:
+      Alternative allele is:
+
+**Q5** What is the frequency of the alternative allele in each of the populations we analysed?
+
+**A** YRI:
+      CHB:
+      CEU:
+
+Look up the SNP with the highest Fst in the 1000 Genomes Selection Browser (http://pgb.ibe.upf.edu/cgi-bin/hgTracks). You can look it up by position, e.g. chr15:[position]
+
+**Q6** In what gene is the SNP from Q4 located?
+
+**A**
+
+
+**Q7** We calculated global Fst among all 3 populations (YRI, CHB, CEU). The Selection Browser shows Fst between each pair of populations (CEU vs. YRI, CHB vs. CEU, YRI vs. CHB). Which of the three populations seem to be driving high global Fst at that locus? *Tip:* Your answer here should be consistent with Q5.
+
+**A**
+
+
+
+**Q8** Zoom out by 10x three times. Is the SNP from Q8 in intron or exon?
+
+**A**
+
+
+**Q9** You can find more info about this SNP in this publication: https://academic.oup.com/mbe/article/24/3/710/1240790. Briefly explain *in your own words* what selective pressure could explain the values of Fst you observed above.
+
+**A**
+
+
+
+
+
