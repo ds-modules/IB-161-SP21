@@ -46,7 +46,7 @@ Each row is a SNP. The first 9 columns have information about the SNPs and from 
 
 We will use the same functions to read in vcf files we used in Lab 6:
 
-```{r}
+```{r, warning=FALSE}
 library(pegas)
 
 # *read.vcf* reads in the genotypes from the vcf file
